@@ -28,7 +28,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	etcdv1alpha1 "k8s-operator/api/v1alpha1"
+	etcdv1alpha1 "github.com/k8s-operator/api/v1alpha1"
 	//+kubebuilder:scaffold:imports
 )
 
