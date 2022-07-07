@@ -30,6 +30,8 @@ import (
 
 	etcdv1alpha1 "github.com/k8s-operator/api/v1alpha1"
 	//+kubebuilder:scaffold:imports
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 // These tests use Ginkgo (BDD-style Go testing framework). Refer to
