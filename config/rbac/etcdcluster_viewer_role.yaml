@@ -4,17 +4,17 @@ kind: ClusterRole
 metadata:
   name: etcdcluster-viewer-role
 rules:
-- apiGroups:
-  - etcd.zero.com
-  resources:
-  - etcdclusters
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - etcd.zero.com
-  resources:
-  - etcdclusters/status
-  verbs:
-  - get
+  - apiGroups:
+      - etcd.zero.com
+    resources:
+      - etcdclusters
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - etcd.zero.com
+    resources:
+      - etcdclusters/status
+    verbs:
+      - get

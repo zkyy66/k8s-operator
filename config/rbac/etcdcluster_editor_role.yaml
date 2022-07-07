@@ -4,21 +4,21 @@ kind: ClusterRole
 metadata:
   name: etcdcluster-editor-role
 rules:
-- apiGroups:
-  - etcd.zero.com
-  resources:
-  - etcdclusters
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - etcd.zero.com
-  resources:
-  - etcdclusters/status
-  verbs:
-  - get
+  - apiGroups:
+      - etcd.zero.com
+    resources:
+      - etcdclusters
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - etcd.zero.com
+    resources:
+      - etcdclusters/status
+    verbs:
+      - get

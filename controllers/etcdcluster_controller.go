@@ -18,13 +18,16 @@ package controllers
 
 import (
 	"context"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	etcdv1alpha1 "k8s-operator/api/v1alpha1"
+	etcdv1alpha1 "github.com/k8s-operator/api/v1alpha1"
 )
 
 // EtcdClusterReconciler reconciles a EtcdCluster object
@@ -50,7 +53,31 @@ func (r *EtcdClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	_ = log.FromContext(ctx)
 
 	// TODO(user): your logic here
+	var etcdCluster etcdv1alpha1.EtcdCluster
+	if err := r.Get(ctx, req.NamespacedName, &etcdCluster); err != nil {
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+	//create or update service
+	var svc corev1.Service
+	svc.Name = etcdCluster.Name
+	svc.Namespace = etcdCluster.Namespace
+	or, err := ctrl.CreateOrUpdate(ctx, r.Client, &svc, func() error {
+		MutateHeadlessSvc(&etcdCluster, &svc)
+		return controllerutil.SetControllerReference(&etcdCluster, &svc, r.Scheme)
+	})
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	log.Log.Info("create or update zkyy66 etcd", or)
 
+	//create or update statefulset
+	var sts appsv1.StatefulSet
+	sts.Name = etcdCluster.Name
+	sts.Namespace = etcdCluster.Namespace
+	or, err = ctrl.CreateOrUpdate(ctx, r.Client, &sts, func() error {
+		MutatestatefulSet(&etcdCluster, &sts)
+		return controllerutil.SetControllerReference(&etcdCluster, &sts, r.Scheme)
+	})
 	return ctrl.Result{}, nil
 }
 
