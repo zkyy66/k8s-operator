@@ -68,7 +68,7 @@ func (r *EtcdClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-	log.Log.Info("create or update zkyy66 etcd", or)
+	log.Log.Info("create or update zkyy66 etcd", "service", or)
 
 	//create or update statefulset
 	var sts appsv1.StatefulSet
@@ -78,6 +78,11 @@ func (r *EtcdClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		MutatestatefulSet(&etcdCluster, &sts)
 		return controllerutil.SetControllerReference(&etcdCluster, &sts, r.Scheme)
 	})
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	log.Log.Info("Create Or Update zkyy66 etcd", "statefulset", or)
+
 	return ctrl.Result{}, nil
 }
 
